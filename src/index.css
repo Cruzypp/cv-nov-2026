@@ -1,0 +1,528 @@
+@import '@astryxdesign/core/reset.css';
+@import '@astryxdesign/core/astryx.css';
+@import '@astryxdesign/theme-neutral/theme.css';
+
+/* Brand overrides. The theme sets tokens on its own element inside @layer,
+   so these unlayered rules win over it. */
+:root,
+[data-astryx-theme] {
+  --paper: #fbfcfd;
+  --ink: #15171c;
+  --graphite: #5b6270;
+  --line: #e3e6eb;
+  --cobalt: #2c4bff;
+  --wash: #eef2ff;
+  --font-display: 'Bricolage Grotesque', Figtree, system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --color-background-body: var(--paper);
+  --color-text-primary: var(--ink);
+  --color-text-secondary: var(--graphite);
+  --color-accent: var(--cobalt);
+  --color-text-accent: var(--cobalt);
+  --color-icon-accent: var(--cobalt);
+  --font-family-heading: var(--font-display);
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--cobalt);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--paper);
+}
+
+/* Top bar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px max(16px, calc((100vw - 960px) / 2 + 16px));
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+}
+
+.nav-links a {
+  position: relative;
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--graphite);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  inset: auto 10px 2px;
+  height: 2px;
+  background: var(--cobalt);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.nav-links a:hover {
+  color: var(--ink);
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  padding-top: clamp(56px, 10vw, 112px);
+  overflow: hidden;
+}
+
+.hero-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: grid;
+  gap: 28px;
+}
+
+.hero-badges {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(48px, 9vw, 112px);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-variation-settings: 'opsz' 96;
+  color: var(--ink);
+}
+
+.hero-name span {
+  display: block;
+}
+
+.hero-lede {
+  max-width: 62ch;
+  margin: 0;
+  font-size: clamp(17px, 2vw, 20px);
+  line-height: 1.55;
+  color: var(--graphite);
+  text-wrap: pretty;
+}
+
+.skyline {
+  position: relative;
+  /* Hide the sun below the horizon but let its glow spill upward. */
+  clip-path: inset(-100vh 0 0 0);
+  margin: clamp(40px, 7vw, 72px) 0 0;
+  height: clamp(110px, 18vw, 200px);
+}
+
+.skyline svg {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The fill is opaque so the sun sits behind the mountain and rises out of the saddle. */
+.skyline-fill {
+  fill: var(--wash);
+}
+
+/* Sunrise over the saddle of the Cerro de la Silla (x = 345 of 800 in the path). */
+.sun,
+.sun-glow {
+  position: absolute;
+  left: 43.1%;
+  bottom: 40%;
+  border-radius: 50%;
+  translate: -50% 50%;
+}
+
+.sun {
+  width: clamp(60px, 9vw, 120px);
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 50% 40%, #ffe7a3, #ffb547 55%, #ff8a3d);
+  transform: translateY(160%);
+  animation: sunrise 2.6s var(--ease-out) 1.2s forwards;
+}
+
+.sun-glow {
+  width: clamp(240px, 40vw, 560px);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgb(255 181 71 / 0.35), rgb(255 181 71 / 0.12) 40%, transparent 70%);
+  opacity: 0;
+  transform: translateY(40%) scale(0.6);
+  animation: glow 3s var(--ease-out) 1.4s forwards;
+}
+
+@keyframes sunrise {
+  to {
+    transform: translateY(-10%);
+  }
+}
+
+@keyframes glow {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.skyline-line {
+  fill: none;
+  stroke: var(--cobalt);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 2.2s var(--ease-out) 0.7s forwards;
+}
+
+.skyline-caption {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 14px 16px 0;
+  font-size: 13px;
+  color: var(--graphite);
+}
+
+/* Hero load sequence: one orchestrated entrance, staggered by --i. */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: rise 0.8s var(--ease-out) calc(var(--i, 0) * 90ms + 100ms) forwards;
+}
+
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Sections */
+main > .section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: clamp(64px, 9vw, 112px) 16px 0;
+  display: grid;
+  gap: 32px;
+}
+
+.section > h2 {
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.03em;
+}
+
+.bullets {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-inline-start: 18px;
+  max-width: 72ch;
+}
+
+.bullets li::marker {
+  color: var(--cobalt);
+}
+
+/* Experience timeline: the rail fills as you scroll through it. */
+.timeline {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 32px;
+  display: grid;
+  gap: 48px;
+}
+
+.timeline::before,
+.timeline::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--line);
+}
+
+.timeline::after {
+  background: var(--cobalt);
+  transform-origin: top;
+}
+
+@supports (animation-timeline: view()) {
+  .timeline::after {
+    animation: fill-rail linear both;
+    animation-timeline: view();
+    animation-range: entry 40% cover 60%;
+  }
+
+  @keyframes fill-rail {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+}
+
+.timeline-item {
+  position: relative;
+  display: grid;
+  gap: 16px;
+}
+
+.dot {
+  position: absolute;
+  left: -32px;
+  top: 6px;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--cobalt);
+}
+
+.dot-current {
+  background: var(--cobalt);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--cobalt) 45%, transparent);
+  animation: pulse 2.4s ease-out infinite;
+}
+
+@keyframes pulse {
+  70%,
+  100% {
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--cobalt) 0%, transparent);
+  }
+}
+
+.job-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.job-meta {
+  display: grid;
+  gap: 2px;
+  text-align: end;
+}
+
+/* Projects */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  gap: 20px;
+}
+
+.project {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: 28px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  transition:
+    border-color 0.25s,
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+
+.project:hover {
+  border-color: color-mix(in srgb, var(--cobalt) 40%, var(--line));
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--cobalt) 45%, transparent);
+}
+
+.project-name {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+
+/* Skills */
+.skills {
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.skills-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 8px 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.skills-row dd {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Education */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 32px;
+}
+
+.fact {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding-top: 20px;
+  border-top: 2px solid var(--ink);
+}
+
+.gpa {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 8px 0 0;
+}
+
+.gpa-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 44px;
+  letter-spacing: -0.04em;
+  color: var(--cobalt);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Contact */
+.contact {
+  max-width: 960px;
+  margin: clamp(80px, 12vw, 140px) auto 0;
+  padding: clamp(48px, 8vw, 80px) 16px;
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+}
+
+.contact-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(44px, 8vw, 88px);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+}
+
+.footer {
+  text-align: center;
+  padding: 24px 16px 40px;
+}
+
+@media (max-width: 640px) {
+  .nav-links {
+    display: none;
+  }
+
+  .skills-row {
+    grid-template-columns: 1fr;
+  }
+
+  .job-meta {
+    text-align: start;
+  }
+
+  .project {
+    padding: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal,
+  .sun-glow {
+    opacity: 1;
+    transform: none;
+  }
+
+  .sun {
+    transform: translateY(-10%);
+  }
+
+  .skyline-line {
+    stroke-dashoffset: 0;
+  }
+}
